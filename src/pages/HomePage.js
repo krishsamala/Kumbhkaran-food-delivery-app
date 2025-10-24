@@ -2,6 +2,7 @@ import React from 'react';
 // Note the updated import paths
 import { RestaurantCard, DishCard } from '../components/ReusableComponents';
 import { mockCategories, mockRestaurants, mockDishes } from '../data/mockData';
+import logo from '../assets/Kumbhkaran_1.png';
 
 /**
  * The Home Page component.
@@ -9,17 +10,10 @@ import { mockCategories, mockRestaurants, mockDishes } from '../data/mockData';
 const HomePage = ({ addToCart }) => (
   <div className="space-y-6">
     {/* Header */}
-    <header className="flex justify-between items-center">
-      <div>
-        <h1 className="text-2xl font-bold text-orange-500">Kumbhkaran</h1>
-        <div className="flex items-center text-sm text-gray-600">
-          <span role="img" aria-label="location" className="mr-1">📍</span>
-          <span>Mumbai, Maharashtra</span>
-        </div>
-      </div>
-      <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-        <span role="img" aria-label="user" className="text-2xl">👤</span>
-      </div>
+    <header className = "flex justify-between items-center">
+    <div className = "flex justify-center align-center pt-2 pb-2 bl-50">
+    <img src={logo} alt= "Kumbhkaran Logo" className="w-40 h-auto" />
+  </div>
     </header>
     
     {/* Search Bar (static) */}
