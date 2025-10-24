@@ -3,6 +3,7 @@ import React from 'react';
 import { RestaurantCard, DishCard } from '../components/ReusableComponents';
 import { mockCategories, mockRestaurants, mockDishes } from '../data/mockData';
 import logo from '../assets/Kumbhkaran_1.png';
+//import SearchPage from './pages/SearchPage.js';
 
 /**
  * The Home Page component.
@@ -22,7 +23,7 @@ const HomePage = ({ addToCart }) => (
         type="text" 
         placeholder="Search for restaurants or dishes..." 
         className="w-full p-3 pl-10 bg-gray-100 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500"
-        disabled 
+        //disabled 
       />
       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">🔍</span>
     </div>
