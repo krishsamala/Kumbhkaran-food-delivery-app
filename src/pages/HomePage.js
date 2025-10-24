@@ -12,7 +12,7 @@ const HomePage = ({ addToCart }) => (
     {/* Header */}
     <header className = "flex justify-between items-center">
     <div className = "flex justify-center  pt-2 pb-2 pl-2">
-    <img src={logo} alt= "Kumbhkaran Logo" className="w-96 h-32" />
+    <img src={logo} alt= "Kumbhkaran Logo" className="w-96 h-44 object-cover" />
   </div>
     </header>
     
