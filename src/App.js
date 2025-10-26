@@ -1,79 +1,91 @@
-import React, { useState, useMemo } from 'react';
-
-// Import all our new components from their new folders
-import HomePage from './pages/HomePage.js';
-import SearchPage from './pages/SearchPage.js';
-import CartPage from './pages/CartPage.js';
-import AccountPage from './pages/AccountPage.js';
-import BottomNavBar from './components/BottomNavBar.js';
-
-// We don't need to import App.css anymore unless you add custom styles
-// import './App.css'; 
+import React, { useState } from 'react';
+import HomePage from './pages/HomePage';
+import SearchPage from './pages/SearchPage';
+import CartPage from './pages/CartPage';
+import AccountPage from './pages/AccountPage';
+import TopNavBar from './components/TopNavBar';
 
 /**
  * The main App component.
- * This now only manages state and navigation.
+ * This is the core of the application, managing which page is active
+ * and the state of the shopping cart.
  */
-export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
+function App() {
+  // State to track the active page
+  const [activePage, setActivePage] = useState('Home');
+  // State for the shopping cart.
   const [cart, setCart] = useState([]);
 
-  // --- Cart Management Functions ---
-  // These live in the main App component so they can be
-  // passed down to any page that needs them.
-
-  const addToCart = (dish) => {
+  /**
+   * Adds a dish to the shopping cart.
+   * If the item is already in the cart, it increases its quantity.
+   * @param {object} dishToAdd - The dish object to add.
+   */
+  const addToCart = (dishToAdd) => {
     setCart(prevCart => {
-      const existingItem = prevCart.find(item => item.id === dish.id);
+      // Check if item is already in cart
+      const existingItem = prevCart.find(item => item.id === dishToAdd.id);
+      
       if (existingItem) {
-        // Increase quantity
+        // If yes, return new cart array with updated quantity
         return prevCart.map(item =>
-          item.id === dish.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === dishToAdd.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       } else {
-        // Add new item
-        return [...prevCart, { ...dish, quantity: 1 }];
+        // If no, add new item to cart with quantity 1
+        return [...prevCart, { ...dishToAdd, quantity: 1 }];
       }
     });
+    // Optional: Show a confirmation message
+    console.log(`Added ${dishToAdd.name} to cart.`);
   };
 
-  const updateQuantity = (itemId, amount) => {
-    setCart(prevCart => {
-      return prevCart
-        .map(item =>
-          item.id === itemId ? { ...item, quantity: item.quantity + amount } : item
+  /**
+   * Removes an item completely from the cart.
+   * @param {string} dishId - The ID of the dish to remove.
+   */
+  const removeFromCart = (dishId) => {
+    setCart(prevCart => prevCart.filter(item => item.id !== dishId));
+  };
+
+  /**
+   * Updates the quantity of a specific item in the cart.
+   * If quantity reaches 0, it removes the item.
+   * @param {string} dishId - The ID of the dish to update.
+   * @param {number} newQuantity - The new quantity.
+   */
+  const updateCartQuantity = (dishId, newQuantity) => {
+    if (newQuantity <= 0) {
+      removeFromCart(dishId);
+    } else {
+      setCart(prevCart =>
+        prevCart.map(item =>
+          item.id === dishId ? { ...item, quantity: newQuantity } : item
         )
-        .filter(item => item.quantity > 0); // Remove item if quantity drops to 0
-    });
-  };
-  
-  const removeFromCart = (itemId) => {
-     setCart(prevCart => prevCart.filter(item => item.id !== itemId));
+      );
+    }
   };
 
-  // --- Memoized Values ---
-  // These recalculate only when the cart changes.
-
-  const cartTotal = useMemo(() => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  }, [cart]);
-  
-  const cartCount = useMemo(() => {
-    return cart.reduce((count, item) => count + item.quantity, 0);
-  }, [cart]);
-
-  // --- Render Active Page ---
-  // This function decides which page component to show.
-
-  const renderActiveTab = () => {
-    switch (activeTab) {
-      case 'home':
+  /**
+   * Renders the currently active page based on the 'activePage' state.
+   */
+  const renderPage = () => {
+    switch (activePage) {
+      case 'Home':
         return <HomePage addToCart={addToCart} />;
-      case 'search':
+      case 'Search':
         return <SearchPage addToCart={addToCart} />;
-      case 'cart':
-        return <CartPage cart={cart} updateQuantity={updateQuantity} removeFromCart={removeFromCart} cartTotal={cartTotal} />;
-      case 'account':
+      case 'Cart':
+        return (
+          <CartPage
+            cart={cart}
+            updateCartQuantity={updateCartQuantity}
+            removeFromCart={removeFromCart}
+          />
+        );
+      case 'Account':
         return <AccountPage />;
       default:
         return <HomePage addToCart={addToCart} />;
@@ -81,20 +93,23 @@ export default function App() {
   };
 
   return (
-    // Main container with mobile-first constraints
-    <div className="font-sans antialiased bg-gray-100 min-h-screen">
-      <div className="max-w-md mx-auto bg-gray-50 shadow-2xl min-h-screen pb-24">
-        
-        <main className="p-4">
-          {renderActiveTab()}
-        </main>
-      </div>
+    <div className="font-sans text-gray-800">
       
-      <BottomNavBar 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        cartCount={cartCount} 
-      />
+      <TopNavBar onNavigate={setActivePage} activePage={activePage} cartCount={cart.length} />
+
+      {/* Main Content Area */}
+      {/* This 'main' tag holds the active page.
+        'max-w-7xl' makes it wide but not full-screen on large monitors.
+        'mx-auto' centers it.
+        'px-4 py-8' gives it nice padding.
+      */}
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        {renderPage()}
+      </main>
     </div>
   );
 }
+
+export default App;
+
+

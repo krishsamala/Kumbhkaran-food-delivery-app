@@ -2,7 +2,7 @@ import React from 'react';
 // Note the updated import paths
 import { RestaurantCard, DishCard } from '../components/ReusableComponents';
 import { mockCategories, mockRestaurants, mockDishes } from '../data/mockData';
-import logo from '../assets/Kumbhkaran_1.png';
+import logo from '../assets/Kumbhkaran_2.png';
 //import SearchPage from './pages/SearchPage.js';
 
 /**
@@ -12,12 +12,12 @@ const HomePage = ({ addToCart }) => (
   <div className="space-y-6">
     {/* Header */}
     <header className = "flex justify-between items-center">
-    <div className = "flex justify-center  pt-2 pb-2 pl-2">
-    <img src={logo} alt= "Kumbhkaran Logo" className="w-96 h-44 object-cover" />
+    <div className = "flex justify-center  pt-2 pb-2 pl-[500px]" >
+    <img src={logo} alt= "Kumbhkaran Logo" className="w-100vw h-52 object-cover" />
   </div>
     </header>
     
-    {/* Search Bar (static) */}
+    {/* Search Bar (static)
     <div className="relative">
       <input 
         type="text" 
@@ -26,7 +26,7 @@ const HomePage = ({ addToCart }) => (
         //disabled 
       />
       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">🔍</span>
-    </div>
+    </div> */}
     
     {/* Banners */}
     <div className="bg-gradient-to-r from-orange-400 to-red-500 text-white p-6 rounded-lg shadow-lg">

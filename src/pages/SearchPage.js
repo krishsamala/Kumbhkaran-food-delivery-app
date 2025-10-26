@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// Note the updated import paths
+
 import { RestaurantCard, DishCard } from '../components/ReusableComponents';
 import { allSearchableItems, mockCategories } from '../data/mockData';
 
