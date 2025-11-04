@@ -6,12 +6,12 @@ import React from 'react';
 /**
  * A card representing a restaurant.
  */
-export const RestaurantCard = ({ restaurant }) => (
-<div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+export const RestaurantCard = ({ restaurant , onClick }) => (
+<div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105" onClick={onClick}>
     <img 
       src={restaurant.img} 
       alt={restaurant.name} 
-      className="w-full h-32 object-cover"
+      className=" block w-64 h-32 object-cover mx-auto"
       onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/600x400/cccccc/ffffff?text=Image+Error'; }}
     />
     <div className="p-4">

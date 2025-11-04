@@ -1,28 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react'; // 1. Imported useState
+import { AddressOverlay } from '../components/AddressOverlay'; // 2. Imported the new overlay component
 
 /**
  * The Cart Page component.
  * Displays items in the cart and a summary.
  */
 const CartPage = ({ cart, updateCartQuantity, removeFromCart }) => {
-  // Calculate total price
-  // We add (item.price || 0) and (item.quantity || 1) to prevent crashes
-  // if data is missing. This is a defensive fix.
+  // 3. Added state to manage the overlay
+  const [isAddressOverlayOpen, setIsAddressOverlayOpen] = useState(false);
+
+  // --- Calculations (Existing Code) ---
   const subtotal = cart.reduce(
     (acc, item) => acc + (item.price || 0) * (item.quantity || 1),
     0
   );
   const deliveryFee = subtotal > 0 ? 2.50 : 0; // $2.50 delivery fee if cart not empty
   const total = subtotal + deliveryFee;
-
   const isEmpty = cart.length === 0;
 
-  const handleAddress=()=>{
+  // 4. Added handlers for the overlay
+  const openAddressOverlay = () => {
+    setIsAddressOverlayOpen(true);
+  };
 
-  }
+  const closeAddressOverlay = () => {
+    setIsAddressOverlayOpen(false);
+  };
+
+  // This function receives data from the overlay
+  const handleSaveAddress = (addressData) => {
+    console.log("Saving new address to MongoDB:", addressData);
+    
+    // TODO: This is where you'll send 'addressData' to your backend API
+    
+    closeAddressOverlay(); // Close the modal after saving
+  };
 
   return (
     <div className="space-y-8">
+      {/* 5. Conditionally render the overlay */}
+      {isAddressOverlayOpen && (
+        <AddressOverlay 
+          onClose={closeAddressOverlay} 
+          onSave={handleSaveAddress} 
+        />
+      )}
+
       <h2 className="text-3xl font-bold">Your Cart</h2>
 
       {isEmpty ? (
@@ -50,7 +73,6 @@ const CartPage = ({ cart, updateCartQuantity, removeFromCart }) => {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  {/* We use (subtotal || 0) just in case, though it should be safe */}
                   <span>₹{(subtotal || 0).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
@@ -66,8 +88,11 @@ const CartPage = ({ cart, updateCartQuantity, removeFromCart }) => {
               <button className="w-full bg-orange-500 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-orange-600 transition-colors">
                 Proceed to Checkout
               </button>
-              <button className="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-600 transition-colors"
-              onClick={handleAddress}
+              
+              {/* 6. Updated onClick to open the overlay */}
+              <button 
+                className="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-600 transition-colors"
+                onClick={openAddressOverlay}
               >
                 + Add Address
               </button>
@@ -81,9 +106,9 @@ const CartPage = ({ cart, updateCartQuantity, removeFromCart }) => {
 
 /**
  * A card component for displaying a single item in the cart.
+ * (This component is unchanged)
  */
 const CartItemCard = ({ item, updateCartQuantity, removeFromCart }) => {
-  // Use (item.price || 0) to prevent crash if price is missing
   const itemPrice = item.price || 0;
 
   return (
@@ -130,4 +155,3 @@ const CartItemCard = ({ item, updateCartQuantity, removeFromCart }) => {
 };
 
 export default CartPage;
-
