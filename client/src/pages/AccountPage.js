@@ -10,8 +10,7 @@ const AccountPage = ({ setActivePage }) => {
     // const [email, setEmail] = useState();
 
   const accountOptions = [
-    { name: 'My Orders', icon: '🛍️' },
-    { name: 'My Addresses', icon: '📍' },
+    { name: 'My Orders', icon: '🛍️' },    
     { name: 'Payment Methods', icon: '💳' },
     { name: 'Favorites', icon: '❤️' },
     { name: 'Settings', icon: '⚙️' },
@@ -19,27 +18,27 @@ const AccountPage = ({ setActivePage }) => {
 
 useEffect(() => {
     axios.get('http://localhost:3001/profile', {
-      withCredentials: true // This is CRITICAL
+      withCredentials: true
     })
     .then(result => {
-      
-      setUserData(result.data);
+      setUserData(result.data); // This now includes name, email, AND addresses
     })
     .catch(err => {
       console.log("Error fetching profile:", err);
-      
     });
   }, []);
 
   if (!userData) {
     return <div>Loading account...</div>;
   }
-  const handleLogout =() =>{
+  
+  const handleLogout = () => {
     setActivePage('Login');
   }
+
   return (
     <div className="space-y-6">
-      {/* Profile Header */}
+      {/* Profile Header (Unchanged) */}
       <div className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-sm">
         <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center">
           <span role="img" aria-label="user" className="text-4xl">👤</span>
@@ -50,8 +49,29 @@ useEffect(() => {
         </div>
       </div>
       
-      {/* Menu Options */}
+      {/* --- 1. NEW: SAVED ADDRESSES SECTION --- */}
+      <div className="bg-white rounded-lg shadow-sm p-4">
+        <h3 className="text-lg font-bold mb-3">My Addresses</h3>
+        {/* Check if addresses exist and the array isn't empty */}
+        {userData.addresses && userData.addresses.length > 0 ? (
+          <div className="space-y-3">
+            {/* Loop over the addresses and display them */}
+            {userData.addresses.map((addr, index) => (
+              <div key={index} className="border p-3 rounded-md bg-gray-50 text-sm">
+                <p className="font-semibold">{addr.street}</p>
+                {addr.landmark && <p className="text-gray-600">{addr.landmark}</p>}
+                <p className="text-gray-600">{addr.city}, {addr.state} - {addr.pincode}</p>
+                <p className="text-gray-600">Phone: {addr.phone}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">You have no saved addresses.</p>
+        )}
+      </div>
+      
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+        {/* ADD THIS CODE BACK: */}
         {accountOptions.map(option => (
           <button 
             key={option.name} 
@@ -66,7 +86,7 @@ useEffect(() => {
         ))}
       </div>
       
-      {/* Logout Button */}
+      {/* --- 3. LOGOUT BUTTON (Unchanged) --- */}
       <button className="flex justify-center items-center w-full p-4 bg-white rounded-lg shadow-sm text-red-500 font-medium hover:bg-red-50" onClick={handleLogout}>
         <span role="img" aria-label="logout" className="mr-3 text-xl">🚪</span>
         <span>Logout</span>
@@ -74,6 +94,5 @@ useEffect(() => {
     </div>
   );
 };
-
 
 export default AccountPage;

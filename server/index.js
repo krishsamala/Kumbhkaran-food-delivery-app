@@ -53,21 +53,49 @@ app.post("/login", (req, res)=>{
 
 // This route gets the logged-in user's data
 
+app.post('/add-address', (req, res) => {
+    // Check if the user is logged in from their session
+    if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    const newAddress = req.body; // Get the address data from the frontend
+
+    // Find the user by their ID and push the new address into their 'addresses' array
+    UserModel.findByIdAndUpdate(
+        req.session.userId,
+        { $push: { addresses: newAddress } }, // $push adds an item to an array
+        { new: true } // This option returns the updated user document
+    )
+    .then(updatedUser => {
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        // Send back a success message and the new list of addresses
+        res.json({ success: true, addresses: updatedUser.addresses });
+    })
+    .catch(err => res.status(500).json(err));
+});
+
+
+// 2. UPDATE YOUR EXISTING /profile route
 app.get('/profile', (req, res) => {
-  // Check if the user is logged in by looking for the session
   if (!req.session.userId) {
     return res.status(401).json({ message: "Not authenticated" });
   }
 
-  //  Use the ID from the session to find the user in the database
   UserModel.findById(req.session.userId)
     .then(user => {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
       
-      // 3. Send back the user's name and email
-      res.json({ name: user.name, email: user.email });
+      // UPDATE: Send the addresses along with name and email
+      res.json({ 
+          name: user.name, 
+          email: user.email, 
+          addresses: user.addresses // <-- THIS IS THE NEW PART
+      });
     })
     .catch(err => res.status(500).json(err));
 });

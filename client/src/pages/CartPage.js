@@ -1,61 +1,88 @@
-import React, { useState } from 'react'; // 1. Imported useState
-import { AddressOverlay } from '../components/AddressOverlay'; // 2. Imported the new overlay component
+import React, { useState, useEffect } from 'react'; // 1. Import useEffect
+import axios from 'axios'; // 2. Import axios
+import { AddressOverlay } from '../components/AddressOverlay';
+import { SelectAddressOverlay } from '../components/SelectAddressOverlay'; // 3. Import new overlay
 
-/**
- * The Cart Page component.
- * Displays items in the cart and a summary.
- */
 const CartPage = ({ cart, updateCartQuantity, removeFromCart }) => {
-  // 3. Added state to manage the overlay
+  // --- States ---
   const [isAddressOverlayOpen, setIsAddressOverlayOpen] = useState(false);
+  const [isSelectAddressOpen, setIsSelectAddressOpen] = useState(false); // 4. New state
+  const [userAddresses, setUserAddresses] = useState([]); // 5. New state
+  const [selectedAddress, setSelectedAddress] = useState(null); // 6. New state
 
-  // --- Calculations (Existing Code) ---
-  const subtotal = cart.reduce(
-    (acc, item) => acc + (item.price || 0) * (item.quantity || 1),
-    0
-  );
-  const deliveryFee = subtotal > 0 ? 2.50 : 0; // $2.50 delivery fee if cart not empty
+  // --- Calculations (Unchanged) ---
+  const subtotal = cart.reduce((acc, item) => acc + (item.price || 0) * (item.quantity || 1), 0);
+  const deliveryFee = subtotal > 0 ? 2.50 : 0;
   const total = subtotal + deliveryFee;
   const isEmpty = cart.length === 0;
 
-  // 4. Added handlers for the overlay
-  const openAddressOverlay = () => {
-    setIsAddressOverlayOpen(true);
+  // 7. New Effect: Fetch user's addresses when the page loads
+  useEffect(() => {
+    axios.get('http://localhost:3001/profile', { withCredentials: true })
+      .then(result => {
+        if (result.data.addresses) {
+          setUserAddresses(result.data.addresses);
+        }
+      })
+      .catch(err => {
+        console.log("Error fetching profile addresses:", err);
+      });
+  }, []); // Empty array means this runs once on mount
+
+  // --- Handlers ---
+  const openAddressOverlay = () => setIsAddressOverlayOpen(true);
+  const closeAddressOverlay = () => setIsAddressOverlayOpen(false);
+
+  const openSelectAddressOverlay = () => setIsSelectAddressOpen(true);
+  const closeSelectAddressOverlay = () => setIsSelectAddressOpen(false);
+
+  // 8. New Handler: Called when "Select" is clicked in the new overlay
+  const handleSelectAddress = (address) => {
+    setSelectedAddress(address);
+    closeSelectAddressOverlay();
   };
 
-  const closeAddressOverlay = () => {
-    setIsAddressOverlayOpen(false);
-  };
-
-  // This function receives data from the overlay
+  // 9. UPDATED: This function now updates the address list after saving
   const handleSaveAddress = (addressData) => {
-    console.log("Saving new address to MongoDB:", addressData);
+    axios.post('http://localhost:3001/add-address', addressData, { withCredentials: true })
+      .then(result => {
+        if (result.data.success) {
+          setUserAddresses(result.data.addresses); // Update the list with the new address
+          console.log("Address saved successfully!");
+        }
+      })
+      .catch(err => console.error("Error saving address:", err));
     
-    // TODO: This is where you'll send 'addressData' to your backend API
-    
-    closeAddressOverlay(); // Close the modal after saving
+    closeAddressOverlay();
   };
 
   return (
     <div className="space-y-8">
-      {/* 5. Conditionally render the overlay */}
+      {/* --- Overlays --- */}
+      {/* 10. Render BOTH overlays, they control their own visibility */}
       {isAddressOverlayOpen && (
         <AddressOverlay 
           onClose={closeAddressOverlay} 
           onSave={handleSaveAddress} 
         />
       )}
+      
+      <SelectAddressOverlay 
+        isOpen={isSelectAddressOpen}
+        onClose={closeSelectAddressOverlay}
+        onSelect={handleSelectAddress}
+        addresses={userAddresses}
+      />
 
       <h2 className="text-3xl font-bold">Your Cart</h2>
 
       {isEmpty ? (
         <p className="text-gray-600 text-lg">Your cart is empty. Add some food!</p>
       ) : (
-        // Two-column layout for desktop
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="flex flex-col md:flex-row justify-between gap-8">
           
-          {/* Cart Items (Left Column) */}
-          <div className="md:col-span-2 space-y-4">
+          {/* Cart Items (Left Column) - Unchanged */}
+          <div className="w-full md:w-8/12 space-y-4">
             {cart.map(item => (
               <CartItemCard
                 key={item.id}
@@ -67,34 +94,58 @@ const CartPage = ({ cart, updateCartQuantity, removeFromCart }) => {
           </div>
 
           {/* Order Summary (Right Column) */}
-          <div className="md:col-span-1">
-            <div className="bg-white shadow-lg rounded-lg p-6 sticky top-24">
-              <h3 className="text-xl font-bold mb-4">Order Summary</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>₹{(subtotal || 0).toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Delivery Fee</span>
-                  <span>₹{(deliveryFee || 0).toFixed(2)}</span>
+          <div className="w-full md:w-4/12">
+            <div className="bg-white shadow-lg rounded-lg p-6 sticky top-24 w-full">
+            <h3 className="text-xl font-bold mb-4">Order Summary</h3>
+            {/* ADD THIS CODE BACK: */}
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <span>₹{(subtotal || 0).toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Delivery Fee</span>
+                <span>₹{(deliveryFee || 0).toFixed(2)}</span>
                 </div>
                 <div className="border-t border-gray-200 my-2"></div>
                 <div className="flex justify-between text-lg font-bold">
-                  <span>Total</span>
-                  <span>₹{(total || 0).toFixed(2)}</span>
-                </div>
+                <span>Total</span>
+                <span>₹{(total || 0).toFixed(2)}</span>
               </div>
+            </div>
+
+              {/* 11. New Section: Display Selected Address */}
+              <div className="my-6">
+                <h4 className="text-lg font-semibold mb-2">Delivery To:</h4>
+                {selectedAddress ? (
+                  <div className="border p-3 rounded-md bg-gray-50 text-sm">
+                    <p className="font-semibold">{selectedAddress.street}</p>
+                    <p className="text-gray-600">{selectedAddress.city}, {selectedAddress.pincode}</p>
+                    <p className="text-gray-600">Phone: {selectedAddress.phone}</p>
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-sm">Please select an address.</p>
+                )}
+              </div>
+
               <button className="w-full bg-orange-500 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-orange-600 transition-colors">
                 Proceed to Checkout
               </button>
               
-              {/* 6. Updated onClick to open the overlay */}
+              {/* 12. New "Select" Button */}
               <button 
-                className="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg mt-6 hover:bg-green-600 transition-colors"
+                className="w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg mt-4 hover:bg-blue-600 transition-colors"
+                onClick={openSelectAddressOverlay}
+              >
+                {selectedAddress ? "Change Address" : "Select Address"}
+              </button>
+
+              {/* 13. "Add" button is unchanged */}
+              <button 
+                className="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg mt-4 hover:bg-green-600 transition-colors"
                 onClick={openAddressOverlay}
               >
-                + Add Address
+                + Add New Address
               </button>
             </div>
           </div>
@@ -104,14 +155,11 @@ const CartPage = ({ cart, updateCartQuantity, removeFromCart }) => {
   );
 };
 
-/**
- * A card component for displaying a single item in the cart.
- * (This component is unchanged)
- */
+// --- CartItemCard Component (Unchanged) ---
 const CartItemCard = ({ item, updateCartQuantity, removeFromCart }) => {
   const itemPrice = item.price || 0;
-
   return (
+    // ADD THIS CODE BACK:
     <div className="flex items-center bg-white shadow-lg rounded-lg p-4 space-x-4">
       <img
         src={item.img}
