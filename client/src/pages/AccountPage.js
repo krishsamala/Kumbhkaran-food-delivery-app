@@ -37,7 +37,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-7">
       {/* Profile Header (Unchanged) */}
       <div className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-sm">
         <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center">

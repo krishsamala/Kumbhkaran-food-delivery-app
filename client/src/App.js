@@ -6,9 +6,10 @@ import AccountPage from './pages/AccountPage';
 import TopNavBar from './components/TopNavBar';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
+import myBackgroundImage from './assets/bg_image.png';
 
-// import { ToastContainer, toast} from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 /**
@@ -47,6 +48,17 @@ function App() {
     });
     // Optional: Show a confirmation message
     console.log(`Added ${dishToAdd.name} to cart.`);
+    toast.success(' Item Added to cart! 🛒', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
     
 
   };
@@ -104,17 +116,27 @@ function App() {
   }
   return (
     
-    <div className="font-sans text-gray-800 max-w-12xl mx-2 px-2 py-8">
+    <div className="font-sans text-gray-800 max-w-7xl mx-auto px-4 py-8 bg-cover bg-center bg-repeat "
+      style={{ backgroundImage: `url(${myBackgroundImage})`}}>
       <TopNavBar onNavigate={setActivePage} activePage={activePage} cartCount={cart.length} />
       
       {/* Main Content Area */}
-      {/* This 'main' tag holds the active page.
-        'max-w-7xl' makes it wide but not full-screen on large monitors.
-        'mx-auto' centers it.
-        'px-4 py-8' gives it nice padding.
-      */}
-      <main className=" max-w-12xl  mx-auto px-2 py-8">
-        
+      
+      <main className=" px-2 py-8">
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Bounce}
+            
+          />
         {renderPage()}
       </main>
 
@@ -122,7 +144,7 @@ function App() {
     </div>
 
    
-  );
+  ); 
 }
 
 export default App;
