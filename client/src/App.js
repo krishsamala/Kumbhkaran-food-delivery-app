@@ -7,6 +7,7 @@ import TopNavBar from './components/TopNavBar';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import myBackgroundImage from './assets/bg_image.png';
+import Footer from './pages/Footer';
 
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -103,7 +104,7 @@ function App() {
           />
         );
       case 'Account':
-        return <AccountPage setActivePage={setActivePage}/>;
+        return <AccountPage addToCart={addToCart} setActivePage={setActivePage}/>;
       default:
         return <HomePage addToCart={addToCart} />;
     }
@@ -154,9 +155,10 @@ function App() {
             
           />
         {renderPage()}
+
       </main>
 
-
+      <Footer setActivePage={setActivePage}/>
     </div>
 
    

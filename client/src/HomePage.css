@@ -1,0 +1,38 @@
+/* Add this to your index.css or a new HomePage.css file */
+ @keyframes flap {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px); /* How high the flap goes */
+   }
+}
+
+.animate-wing-1 {
+  animation: flap 2s infinite ease-in-out;
+}
+
+.animate-wing-2 {
+  animation: flap 2s infinite ease-in-out;
+   animation-delay: 0.2s; /*this makes the flapping look more natural */
+}  
+/* 
+
+
+@keyframes pulse-grow {
+  0%, 100% {
+    transform: scale(1);   /* Normal size */
+  /*}
+  50% {
+    transform: scale(1.1); /* 10% bigger 
+  }
+}
+
+.animate-wing-1 {
+  animation: pulse-grow 2s infinite ease-in-out;
+}
+
+.animate-wing-2 {
+  animation: pulse-grow 2s infinite ease-in-out;
+  animation-delay: 0.2s; 
+} */

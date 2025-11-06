@@ -35,23 +35,46 @@ const TopNavBar = ({ onNavigate, activePage, cartCount }) => {
           </div>
 
           {/* Main Navigation Links */}
-          <div className="hidden md:flex md:items-center md:space-x-4">
-            <button onClick={() => onNavigate('Home')} className={getLinkClasses('Home')}>
-              🏠 Home
+          <div className="hidden md:flex md:items-center items-center md:space-x-4">
+            <button onClick={() => onNavigate('Home')} className={`flex items-center gap-2 ${getLinkClasses('Home')}`}>
+              <lord-icon
+                  src="https://cdn.lordicon.com/jeuxydnh.json"
+                  trigger="hover"
+                  stroke="bold"
+                  colors="primary:#000000,secondary:#000000"
+                  style={{width:'25px',height:'25px'}}>
+              </lord-icon> Home
             </button>
-            <button onClick={() => onNavigate('Search')} className={getLinkClasses('Search')}>
-              🔍 Search
+            <button onClick={() => onNavigate('Search')} className={`flex items-center gap-2 ${getLinkClasses('Search')}`}>
+             <lord-icon
+    src="https://cdn.lordicon.com/wjyqkiew.json"
+    trigger="hover"
+    stroke="bold"
+    colors="primary:#000000,secondary:#eee966"
+    style={{width:'25px',height:'25px'}}>
+</lord-icon> Search
             </button>
-            <button onClick={() => onNavigate('Account')} className={getLinkClasses('Account')}>
-              👤 Account
+            <button onClick={() => onNavigate('Account')} className={`flex items-center gap-2 ${getLinkClasses('Account')}`}>
+              <lord-icon
+                  src="https://cdn.lordicon.com/kdduutaw.json"
+                  trigger="hover"
+                  stroke="bold"
+                  colors="primary:#000000,secondary:#545454"
+                  style={{width:'25px',height:'25px'}}>
+              </lord-icon> Account
             </button>
             
             {/* Cart link with badge */}
             <button 
               onClick={() => onNavigate('Cart')} 
-              className={`${getLinkClasses('Cart')} relative`}
-            >
-              🛒 Cart
+              className={`flex items-center gap-2 ${getLinkClasses('Cart')} relative`}>
+              <lord-icon
+                  src="https://cdn.lordicon.com/uisoczqi.json"
+                  trigger="hover"
+                  stroke="bold"
+                  colors="primary:#000000,secondary:#eee966"
+                  style={{width:'25px',height:'25px'}}>
+              </lord-icon> Cart
               {cartCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                   {cartCount}

@@ -1,7 +1,8 @@
 import React from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 // --- Reusable Components ---
-// All your reusable cards go in this file.
 
 /**
  * A card representing a restaurant.
@@ -30,28 +31,61 @@ export const RestaurantCard = ({ restaurant , onClick }) => (
 /**
  * A card representing a single dish.
  */
-export const DishCard = ({ dish, addToCart }) => (
-<div className="bg-white rounded-lg shadow-md overflow-hidden flex p-3 relative">
-    <img 
-      src={dish.img} 
-      alt={dish.name} 
-      className="w-24 h-24 rounded-md object-cover"
-      onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/100x100/cccccc/ffffff?text=Image+Error'; }}
-    />
-    <div className="ml-4 flex-1">
-      <h4 className="font-bold text-md">{dish.name}</h4>
-      <p className="text-sm text-gray-500">{dish.restaurant}</p>
-      <p className="font-semibold text-gray-800 mt-2">₹{dish.price.toFixed(2)}</p>
+export const DishCard = ({ dish, addToCart }) => {
+    
+  // 1. THIS FUNCTION NOW LIVES *INSIDE* THE COMPONENT
+  // It has access to the 'dish' prop
+  const handleFavoriteClick = () => {
+    axios.post('http://localhost:3001/favorites/toggle', 
+      { dishId: dish.id }, // Send the dish's ID
+      { withCredentials: true } // Don't forget this!
+    )
+    .then(res => {
+      toast.success('Favorites updated!');
+    })
+    .catch(err => {
+      toast.error('Please log in to add favorites.');
+    });
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden flex p-3 relative">
+      
+      {/* 2. ADDED THE FAVORITE BUTTON HERE */}
+      <button 
+        onClick={handleFavoriteClick} 
+        className="absolute top-2 right-2 p-1 text-2xl z-10"
+        title="Add to favorites"
+      >
+        <lord-icon
+    src="https://cdn.lordicon.com/ajzwsrcs.json"
+    trigger="click"
+    style={{width:'25px',height:'25px'}}>
+</lord-icon>
+      </button>
+
+      <img 
+        src={dish.img} 
+        alt={dish.name} 
+        className="w-24 h-24 rounded-md object-cover"
+        onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/100x100/cccccc/ffffff?text=Image+Error'; }}
+      />
+      <div className="ml-4 flex-1">
+        <h4 className="font-bold text-md">{dish.name}</h4>
+        <p className="text-sm text-gray-500">{dish.restaurant}</p>
+        <p className="font-semibold text-gray-800 mt-2">₹{dish.price.toFixed(2)}</p>
+      </div>
+      <button
+        onClick={() => addToCart(dish)}
+        className="absolute bottom-3 right-3 bg-orange-500 text-white rounded-lg w-20 h-15 p-2 flex items-center justify-center shadow-lg transition-transform duration-300 hover:bg-orange-600 hover:scale-110"
+        aria-label={`Add ${dish.name} to cart`}
+      >
+        <span className="font-bold text-l">+ <span className="font-medium text-m" >Add</span></span>
+      </button>
     </div>
-    <button
-      onClick={() => addToCart(dish)}
-      className="absolute bottom-3 right-3 bg-orange-500 text-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg transition-transform duration-300 hover:bg-orange-600 hover:scale-110"
-      aria-label={`Add ${dish.name} to cart`}
-    >
-      <span className="font-bold text-xl">+</span>
-    </button>
-  </div>
-);
+  );
+};
+
 
 /**
  * A card representing an item in the cart.
@@ -63,7 +97,7 @@ export const CartItemCard = ({ item, updateQuantity, removeFromCart }) => (
       alt={item.name} 
       className="w-16 h-16 rounded-lg object-cover"
       onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/100x100/cccccc/ffffff?text=Image+Error'; }}
-    />
+  t />
     <div className="ml-4 flex-1">
       <h4 className="font-bold text-sm">{item.name}</h4>
       <p className="text-xs text-gray-500">{item.restaurant}</p>
@@ -83,7 +117,7 @@ export const CartItemCard = ({ item, updateQuantity, removeFromCart }) => (
             onClick={() => updateQuantity(item.id, 1)}
             className="bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
             aria-label={`Increase quantity of ${item.name}`}
-          >
+        _>
             <span className="font-bold">+</span>
           </button>
         </div>
@@ -94,6 +128,7 @@ export const CartItemCard = ({ item, updateQuantity, removeFromCart }) => (
           >
             <span role="img" aria-label="remove" className="text-lg">🗑️</span>
           </button>
+        {/* REMOVED the broken favorite button from here */}
     </div>
   </div>
 );

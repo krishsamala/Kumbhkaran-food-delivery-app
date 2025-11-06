@@ -1,9 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
 import { RestaurantCard, DishCard } from '../components/ReusableComponents';
-import { mockCategories, mockRestaurants, mockDishes } from '../data/mockData';
+import {  mockRestaurants, mockDishes, mockCategories3d } from '../data/mockData';
 import logo from '../assets/Kumbhkaran_2.png';
+import wing1 from '../assets/wing1.png';
+import wing2 from '../assets/wing2.png';
 import { Overlay } from '../components/Overlay.js'; 
+import '../HomePage.css';
 
 import Marquee from "react-fast-marquee";
 
@@ -54,11 +57,25 @@ const HomePage = ({ addToCart }) => {
       
       {/* Header */}
       <header className="flex justify-center items-center pt-2 pb-2">
+        <div className="flex items-center">
+          <img 
+          src={wing1} 
+          alt="left wing" 
+          className="h-64 w-auto -mr-36 z-0 animate-wing-1"
+        />
+        
         <img 
           src={logo} 
           alt="Kumbhkaran Logo" 
-          className="h-52 w-auto"
+          className="h-60 w-auto z-10"
         />
+
+        <img 
+          src={wing2} 
+          alt="right wing" 
+          className="h-64 w-auto -ml-36 z-0 animate-wing-2"
+        />
+        </div>        
       </header>
       
       {/* Banners */}
@@ -76,7 +93,7 @@ const HomePage = ({ addToCart }) => {
           <h2 className="font-bold text-xl">Free Delivery!!</h2>
           <p className="text-sm">on your order above ₹499. Use code: <span className="font-bold">FD499</span></p>
         </div>
-        <div className="text-black p-6 mr-5 border-4 border-red-400 rounded-lg shadow-lg">
+        <div className="text-black p-6 border-4 border-red-400 rounded-lg shadow-lg">
           <h2 className="font-bold text-xl text-center">Made by </h2>
           <p className="text-sm">KRISH(60003240300) | SWAYAM(60003240300) | BHAVYA(60003240300) | MEET(60003240300) </p>
         </div>
@@ -86,17 +103,17 @@ const HomePage = ({ addToCart }) => {
       {/* Categories */}
       <div>
         <h3 className="justify-center bg-orange-200 rounded-lg text-center text-xl font-bold max-w-64 mb-3 p-1 mx-auto">Categories</h3>
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
-          {mockCategories.slice(0, 6).map(category => (
-            // 6. Call the correct function
-            <div key={category.name} onClick={() => openCategoryOverlay(category)} className="flex flex-col items-center cursor-pointer">
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-1">
+          {mockCategories3d.slice(0, 6).map(category => (
+           
+            <div key={category.name} onClick={() => openCategoryOverlay(category)} className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-110">
               <img 
                 src={category.img} 
                 alt={category.name} 
-                className="w-40 h-20 rounded-lg object-cover shadow-md"
+                className="w-36 h-36"
                 onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/100x100/cccccc/ffffff?text=Image+Error'; }}
               />
-              <span className="mt-2 text-sm font-medium">{category.name}</span>
+              <span className="mt-2 text-xl font-small">{category.name}</span>
             </div>
           ))}
         </div>
@@ -107,8 +124,7 @@ const HomePage = ({ addToCart }) => {
         <h3 className="justify-center bg-orange-200 rounded-lg text-center text-xl font-bold max-w-64 mb-3 p-1 mx-auto">Top Restaurants</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 m-5 ">
           {mockRestaurants.map(res => (
-            // 7. Call the correct function
-            // !! This requires your RestaurantCard to accept an onClick prop !!
+            
             <RestaurantCard key={res.id} restaurant={res} onClick={() => openRestaurantOverlay(res)} />
           ))}
         </div>
@@ -117,7 +133,7 @@ const HomePage = ({ addToCart }) => {
       {/* Popular Dishes (remains the same) */}
       <div>
         <h3 className=" bg-orange-100 rounded-lg text-center text-xl font-bold max-w-xl mb-3 p-2 ">Popular Near You</h3>
-        <div className="grid grid-cols-2 gap-4 space-y-4">
+        <div className="grid grid-cols-2 gap-4">
           {mockDishes.slice(0, 5).map(dish => (
             <DishCard key={dish.id} dish={dish} addToCart={addToCart} />
           ))}
