@@ -29,7 +29,7 @@ const TopNavBar = ({ onNavigate, activePage, cartCount }) => {
             <img 
               src={logo} // <-- UPDATED THIS LINE
               alt="Kumbhkaran Logo"
-              className="h-10 w-auto cursor-pointer" // Adjust h-10 (height) as needed
+              className="h-20 w-auto cursor-pointer" // Adjust h-10 (height) as needed
               onClick={() => onNavigate('Home')}
             />
           </div>

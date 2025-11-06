@@ -112,7 +112,23 @@ function App() {
     return <SignupPage setActivePage={setActivePage} />;
   }
   if (activePage === 'Login' ) {
-    return <LoginPage setActivePage={setActivePage} />;
+    return (<div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+        />
+      <LoginPage setActivePage={setActivePage} />
+      </div>
+      );
   }
   return (
     

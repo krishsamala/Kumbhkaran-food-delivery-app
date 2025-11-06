@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import logo from '../assets/logo.png';
 
+import { toast, Bounce } from 'react-toastify';
 const LoginPage = ({ setActivePage }) => {
     
     
@@ -20,7 +21,18 @@ const LoginPage = ({ setActivePage }) => {
             setActivePage('Home');
         }
         else{
-            alert("record not existed")
+            // alert("record not existed")
+            toast.error('Incorrect Username or Password, No account found! ', {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+              });
         }
         
         })
@@ -69,7 +81,7 @@ const LoginPage = ({ setActivePage }) => {
                  <img 
                   src={logo} 
                   alt="Kumbhkaran Logo"
-                  className="block mx-auto h-52 w-40 cursor-pointer object-cover" // Adjust h-10 (height) as needed}
+                  className="block mx-auto  h-24 w-44  cursor-pointer object-cover" // Adjust h-10 (height) as needed}
                   />
               </div>
             </div>
@@ -136,9 +148,9 @@ const LoginPage = ({ setActivePage }) => {
                 <button
                   type="button"
                   onClick={() => {
-  handleSubmit();
-  handleLogin();
-}}
+                  handleSubmit();
+                  handleLogin();
+                }}
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >
                   Login

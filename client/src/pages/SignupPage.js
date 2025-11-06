@@ -63,7 +63,7 @@ const SignupPage = ({ setActivePage }) => {
              <img 
               src={logo} // <-- UPDATED THIS LINE
               alt="Kumbhkaran Logo"
-              className="block mx-auto h-52 w-40 cursor-pointer object-cover" // Adjust h-10 (height) as needed}
+              className="block mx-auto h-24 w-44 object-cover" // Adjust h-10 (height) as needed}
               />
                     </div>
         </div>
@@ -153,7 +153,7 @@ const SignupPage = ({ setActivePage }) => {
               Register
             </button>
             <h4 className='text-gray-600'>
-              Already have an account? Log in.
+              Already have an account?<span onClick={handleLogin} className='text-blue-500 cursor-pointer hover:text-blue-700'> Log in. </span>
             </h4>
             {/* Login Button */}
             <button
