@@ -25,9 +25,9 @@ const Footer = ({setActivePage}) => {
           <div className="flex-shrink-0">
           
             <img 
-              src={logo} // <-- UPDATED THIS LINE
+              src={logo} 
               alt="Kumbhkaran Logo"
-              className="h-24 w-auto -mt-8 cursor-pointer" // Adjust h-10 (height) as needed
+              className="h-24 w-auto -mt-8 cursor-pointer" 
               
             />
           </div>        

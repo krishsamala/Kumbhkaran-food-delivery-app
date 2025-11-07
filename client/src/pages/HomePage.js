@@ -10,7 +10,7 @@ import '../HomePage.css';
 
 import Marquee from "react-fast-marquee";
 
-const HomePage = ({ addToCart }) => { 
+const HomePage = ({ addToCart, setActivePage }) => { 
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   
   // 1. USE GENERIC STATE for what the overlay will show
@@ -40,6 +40,12 @@ const HomePage = ({ addToCart }) => {
     setIsOverlayOpen(false);
     setOverlayTitle('');
     setOverlayDishes([]);
+  };
+
+  const handlemoreClick = () => {
+    
+      setActivePage('Search');
+   
   };
 
   return ( 
@@ -116,6 +122,15 @@ const HomePage = ({ addToCart }) => {
               <span className="mt-2 text-xl font-small">{category.name}</span>
             </div>
           ))}
+          <div onClick={handlemoreClick} className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-110 p-5 m-16">
+            <lord-icon
+                src="https://cdn.lordicon.com/zllgguxq.json"
+                trigger="hover"
+                state="hover-ternd-flat-3"
+                colors="primary:#242424"
+                style={{width:'60px',height:'60px'}}>
+            </lord-icon><span className="mt-2 text-xl font-small"> View more</span>
+          </div>
         </div>
       </div>
       

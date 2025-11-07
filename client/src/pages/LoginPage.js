@@ -24,6 +24,12 @@ const LoginPage = ({ setActivePage }) => {
             // alert("record not existed")
             toast.error('Incorrect Username or Password, No account found! ', {
               position: "top-center",
+              icon:<lord-icon
+                  src="https://cdn.lordicon.com/aszgxiei.json"
+                  trigger="loop"
+                  colors="primary:#e83a30"
+                  style={{width:'25px',height:'25px'}}>
+              </lord-icon>,
               autoClose: 5000,
               hideProgressBar: false,
               closeOnClick: true,
@@ -141,14 +147,14 @@ const LoginPage = ({ setActivePage }) => {
     stroke="bold"
     state="morph-lashes"
     colors="primary:#000000,secondary:#e83a30"
-    style={{width:'35px',height:'35px'}}>
+    style={{width:'25px',height:'25px'}}>
 </lord-icon> : <lord-icon
     src="https://cdn.lordicon.com/dicvhxpz.json"
     trigger="morph"
     stroke="bold"
     state="morph-lashes"
     colors="primary:#000000,secondary:#e83a30"
-    style={{width:'35px',height:'35px'}}>
+    style={{width:'25px',height:'25px'}}>
 </lord-icon>}
                   </button>
                   {/* --- END OF NEW BUTTON --- */}

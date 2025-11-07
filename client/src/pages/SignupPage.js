@@ -142,14 +142,14 @@ const SignupPage = ({ setActivePage }) => {
     stroke="bold"
     state="morph-lashes"
     colors="primary:#000000,secondary:#e83a30"
-    style={{width:'35px',height:'35px'}}>
+    style={{width:'25px',height:'25px'}}>
 </lord-icon> : <lord-icon
     src="https://cdn.lordicon.com/dicvhxpz.json"
     trigger="morph"
     stroke="bold"
     state="morph-lashes"
     colors="primary:#000000,secondary:#e83a30"
-    style={{width:'35px',height:'35px'}}>
+    style={{width:'25px',height:'25px'}}>
 </lord-icon>}
               </button>
               {/* --- END OF NEW BUTTON --- */}

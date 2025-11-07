@@ -16,7 +16,12 @@ const AccountPage = ({ setActivePage, addToCart }) => {
 
   const accountOptions = [
     { name: 'My Orders', icon: '🛍️' },    
-    { name: 'Payment Methods', icon: '💳' },
+    { name: 'Payment Methods', icon: <lord-icon
+                                        src="https://cdn.lordicon.com/ynsswhvj.json"
+                                        trigger="hover"
+                                        colors="primary:#242424"
+                                        style={{width:'25px',height:'25px'}}>
+                                    </lord-icon> },
     { name: 'Settings', icon: '⚙️' },
   ];
 
@@ -130,7 +135,13 @@ const AccountPage = ({ setActivePage, addToCart }) => {
       
       {/* Logout Button */}
       <button className="flex justify-center items-center w-full p-4 bg-white rounded-lg shadow-sm text-red-500 font-medium hover:bg-red-50" onClick={handleLogout}>
-        <span role="img" aria-label="logout" className="mr-3 text-xl">🚪</span>
+        <lord-icon
+        target='button'
+        
+    src="https://cdn.lordicon.com/vfiwitrm.json"
+    trigger="hover"
+    style={{width:'35px',height:'35px'}}>
+</lord-icon>
         <span>Logout</span>
       </button>
     </div>

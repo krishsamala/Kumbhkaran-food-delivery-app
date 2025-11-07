@@ -51,6 +51,12 @@ function App() {
     console.log(`Added ${dishToAdd.name} to cart.`);
     toast.success(' Item Added to cart! 🛒', {
       position: "top-center",
+      icon:<lord-icon
+    src="https://cdn.lordicon.com/zdfcfvwu.json"
+    trigger="loop"
+    colors="primary:#30e849"
+    style={{width:'45px',height:'45px'}}>
+</lord-icon>,
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -92,7 +98,7 @@ function App() {
       case 'Login':
         return <LoginPage setActivePage={setActivePage}/>;
       case 'Home':
-        return <HomePage addToCart={addToCart} />;
+        return <HomePage addToCart={addToCart} setActivePage={setActivePage}/>;
       case 'Search':
         return <SearchPage addToCart={addToCart} />;
       case 'Cart':

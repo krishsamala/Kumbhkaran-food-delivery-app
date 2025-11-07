@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+
 // --- Reusable Components ---
 
 /**
@@ -41,7 +42,14 @@ export const DishCard = ({ dish, addToCart }) => {
       { withCredentials: true } // Don't forget this!
     )
     .then(res => {
-      toast.success('Favorites updated!');
+      toast.success('Favorites updated!',{
+        icon:<lord-icon
+    src="https://cdn.lordicon.com/yucrjnnl.json"
+    trigger="loop "
+    colors="primary:#e8308c"
+    style={{width:'45px',height:'45px'}}>
+</lord-icon>
+      });
     })
     .catch(err => {
       toast.error('Please log in to add favorites.');
@@ -58,8 +66,9 @@ export const DishCard = ({ dish, addToCart }) => {
         title="Add to favorites"
       >
         <lord-icon
-    src="https://cdn.lordicon.com/ajzwsrcs.json"
-    trigger="click"
+    src="https://cdn.lordicon.com/yucrjnnl.json"
+    trigger="hover"
+    colors="primary:#e83a30"
     style={{width:'25px',height:'25px'}}>
 </lord-icon>
       </button>
