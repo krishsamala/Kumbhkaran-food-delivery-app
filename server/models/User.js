@@ -16,7 +16,8 @@ const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    addresses: [AddressSchema] // An array that holds addresses
+    addresses: [AddressSchema], // An array that holds addresses
+    favorites: [String]
 });
 
 const UserModel = mongoose.model("users", UserSchema);

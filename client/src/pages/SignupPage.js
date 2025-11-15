@@ -137,20 +137,19 @@ const SignupPage = ({ setActivePage }) => {
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <lord-icon
-    src="https://cdn.lordicon.com/dicvhxpz.json"
-    trigger="click"
-    stroke="bold"
-    state="morph-lashes"
-    colors="primary:#000000,secondary:#e83a30"
-    style={{width:'25px',height:'25px'}}>
-</lord-icon> : <lord-icon
-    src="https://cdn.lordicon.com/dicvhxpz.json"
-    trigger="morph"
-    stroke="bold"
-    state="morph-lashes"
-    colors="primary:#000000,secondary:#e83a30"
-    style={{width:'25px',height:'25px'}}>
-</lord-icon>}
+                                src="https://cdn.lordicon.com/dicvhxpz.json"
+                                trigger="in"
+                                stroke="bold"
+                                state="morph-lashes"
+                                colors="primary:#000000,secondary:#e83a30"
+                                style={{width:'25px',height:'25px'}}>
+                            </lord-icon>  : <lord-icon
+                                src="https://cdn.lordicon.com/dicvhxpz.json"
+                                trigger="hover"
+                                stroke="bold"
+                                colors="primary:#121331,secondary:#e83a30"
+                                style={{width:'25px',height:'25px'}}>
+                            </lord-icon>}
               </button>
               {/* --- END OF NEW BUTTON --- */}
             </div>

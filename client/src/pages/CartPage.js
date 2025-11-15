@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'; // 1. Import useEffect
-import axios from 'axios'; // 2. Import axios
+import React, { useState, useEffect } from 'react'; 
+import axios from 'axios';
 import { AddressOverlay } from '../components/AddressOverlay';
-import { SelectAddressOverlay } from '../components/SelectAddressOverlay'; // 3. Import new overlay
+import { SelectAddressOverlay } from '../components/SelectAddressOverlay'; 
 
 const CartPage = ({ cart, updateCartQuantity, removeFromCart }) => {
   // --- States ---
@@ -16,7 +16,7 @@ const CartPage = ({ cart, updateCartQuantity, removeFromCart }) => {
   const total = subtotal + deliveryFee;
   const isEmpty = cart.length === 0;
 
-  // 7. New Effect: Fetch user's addresses when the page loads
+  
   useEffect(() => {
     axios.get('http://localhost:3001/profile', { withCredentials: true })
       .then(result => {
@@ -27,9 +27,9 @@ const CartPage = ({ cart, updateCartQuantity, removeFromCart }) => {
       .catch(err => {
         console.log("Error fetching profile addresses:", err);
       });
-  }, []); // Empty array means this runs once on mount
+  }, []); 
 
-  // --- Handlers ---
+  
   const openAddressOverlay = () => setIsAddressOverlayOpen(true);
   const closeAddressOverlay = () => setIsAddressOverlayOpen(false);
 

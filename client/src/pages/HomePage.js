@@ -2,11 +2,14 @@ import React from 'react';
 import { useState } from 'react';
 import { RestaurantCard, DishCard } from '../components/ReusableComponents';
 import {  mockRestaurants, mockDishes, mockCategories3d } from '../data/mockData';
+import { useEffect } from 'react';
+import axios from 'axios';
 import logo from '../assets/Kumbhkaran_2.png';
 import wing1 from '../assets/wing1.png';
 import wing2 from '../assets/wing2.png';
-import { Overlay } from '../components/Overlay.js'; 
 import '../HomePage.css';
+import { Overlay } from '../components/Overlay.js'; 
+
 
 import Marquee from "react-fast-marquee";
 
@@ -42,11 +45,33 @@ const HomePage = ({ addToCart, setActivePage }) => {
     setOverlayDishes([]);
   };
 
+
+  const handleAboutusClick  = () => {
+    
+      setActivePage('Aboutus');
+   
+  };
   const handlemoreClick = () => {
     
       setActivePage('Search');
    
   };
+
+  const [favoriteIds, setFavoriteIds] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/favorites', {
+      withCredentials: true
+    })
+    .then(result => {
+      setFavoriteIds(result.data); // Store the array of IDs
+    })
+    .catch(err => {
+      // It's okay if this fails (user not logged in)
+      console.log("User not logged in or no favorites.");
+      setFavoriteIds([]); // Ensure it's an empty array
+    });
+  }, []);
 
   return ( 
     <div className="space-y-6 ">
@@ -67,7 +92,7 @@ const HomePage = ({ addToCart, setActivePage }) => {
           <img 
           src={wing1} 
           alt="left wing" 
-          className="h-64 w-auto -mr-36 z-0 animate-wing-1"
+          className="h-64 w-auto -mr-40 z-0 animate-wing-1"
         />
         
         <img 
@@ -79,7 +104,7 @@ const HomePage = ({ addToCart, setActivePage }) => {
         <img 
           src={wing2} 
           alt="right wing" 
-          className="h-64 w-auto -ml-36 z-0 animate-wing-2"
+          className="h-64 w-auto -ml-40 z-0 animate-wing-2"
         />
         </div>        
       </header>
@@ -99,7 +124,7 @@ const HomePage = ({ addToCart, setActivePage }) => {
           <h2 className="font-bold text-xl">Free Delivery!!</h2>
           <p className="text-sm">on your order above ₹499. Use code: <span className="font-bold">FD499</span></p>
         </div>
-        <div className="text-black p-6 border-4 border-red-400 rounded-lg shadow-lg">
+        <div className="text-black p-6 border-4 border-red-400 rounded-lg shadow-lg cursor-pointer" onClick={handleAboutusClick}>
           <h2 className="font-bold text-xl text-center">Made by </h2>
           <p className="text-sm">KRISH(60003240300) | SWAYAM(60003240300) | BHAVYA(60003240300) | MEET(60003240300) </p>
         </div>
@@ -108,8 +133,8 @@ const HomePage = ({ addToCart, setActivePage }) => {
       
       {/* Categories */}
       <div>
-        <h3 className="justify-center bg-orange-200 rounded-lg text-center text-xl font-bold max-w-64 mb-3 p-1 mx-auto">Categories</h3>
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-1">
+        <h3 className="justify-center bg-white/30 backdrop-blur-md shadow-md rounded-lg text-center text-2xl font-medium max-w-64 mb-1 p-1 mx-auto">Categories</h3>
+        <div className="grid grid-cols-5 sm:grid-cols-5 gap-1 m-5">
           {mockCategories3d.slice(0, 6).map(category => (
            
             <div key={category.name} onClick={() => openCategoryOverlay(category)} className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-110">
@@ -122,21 +147,22 @@ const HomePage = ({ addToCart, setActivePage }) => {
               <span className="mt-2 text-xl font-small">{category.name}</span>
             </div>
           ))}
-          <div onClick={handlemoreClick} className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-110 p-5 m-16">
+          <div onClick={handlemoreClick} className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-110 p-16 -mt-4 -mb-2">
             <lord-icon
                 src="https://cdn.lordicon.com/zllgguxq.json"
+                target="div"
                 trigger="hover"
                 state="hover-ternd-flat-3"
                 colors="primary:#242424"
-                style={{width:'60px',height:'60px'}}>
-            </lord-icon><span className="mt-2 text-xl font-small"> View more</span>
+                style={{width:'83px',height:'83px'}}>
+            </lord-icon><span className="mt-6 text-xl font-small"> View more</span>
           </div>
         </div>
       </div>
       
       {/* Top Restaurants */}
       <div>
-        <h3 className="justify-center bg-orange-200 rounded-lg text-center text-xl font-bold max-w-64 mb-3 p-1 mx-auto">Top Restaurants</h3>
+        <h3 className="justify-center bg-white/30 backdrop-blur-md shadow-md rounded-lg text-center text-2xl font-medium max-w-64 mb-1 p-1 mx-auto">Top Restaurants</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 m-5 ">
           {mockRestaurants.map(res => (
             
@@ -147,11 +173,18 @@ const HomePage = ({ addToCart, setActivePage }) => {
       
       {/* Popular Dishes (remains the same) */}
       <div>
-        <h3 className=" bg-orange-100 rounded-lg text-center text-xl font-bold max-w-xl mb-3 p-2 ">Popular Near You</h3>
-        <div className="grid grid-cols-2 gap-4">
-          {mockDishes.slice(0, 5).map(dish => (
-            <DishCard key={dish.id} dish={dish} addToCart={addToCart} />
-          ))}
+        <h3 className="bg-orange-200 rounded-lg text-center text-xl font-bold max-w-64 mb-1 p-2 ">Popular Near You</h3>
+        <div className="grid grid-cols-2 gap-4 p-2">
+          {mockDishes.slice(0, 5).map((dish) => {
+            const isFav = favoriteIds.includes(dish.id);
+          return (            
+            <DishCard 
+              key={dish.id}
+              dish={dish} 
+              addToCart={addToCart} 
+              isInitiallyFavorited={isFav}/>
+          )
+          })}
         </div>
       </div>
     </div>

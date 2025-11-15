@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -9,7 +10,7 @@ import { toast } from 'react-toastify';
  * A card representing a restaurant.
  */
 export const RestaurantCard = ({ restaurant , onClick }) => (
-<div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105" onClick={onClick}>
+<div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 cursor-pointer" onClick={onClick}>
     <img 
       src={restaurant.img} 
       alt={restaurant.name} 
@@ -32,29 +33,46 @@ export const RestaurantCard = ({ restaurant , onClick }) => (
 /**
  * A card representing a single dish.
  */
-export const DishCard = ({ dish, addToCart }) => {
+export const DishCard = ({ dish, addToCart, isInitiallyFavorited, onUnfavorite = () => {} }) => {
     
+
   // 1. THIS FUNCTION NOW LIVES *INSIDE* THE COMPONENT
   // It has access to the 'dish' prop
   const handleFavoriteClick = () => {
+    const newState = !isFavourite;
+    setIsFavourite(newState);
+
     axios.post('http://localhost:3001/favorites/toggle', 
-      { dishId: dish.id }, // Send the dish's ID
-      { withCredentials: true } // Don't forget this!
+      { dishId: dish.id }, 
+      { withCredentials: true } 
     )
     .then(res => {
       toast.success('Favorites updated!',{
         icon:<lord-icon
-    src="https://cdn.lordicon.com/yucrjnnl.json"
-    trigger="loop "
-    colors="primary:#e8308c"
-    style={{width:'45px',height:'45px'}}>
-</lord-icon>
+                src="https://cdn.lordicon.com/yucrjnnl.json"
+                trigger="loop"
+                colors="primary:#e8308c"
+                style={{width:'45px',height:'45px'}}>
+            </lord-icon>
       });
+      if (newState === false) {
+       
+        onUnfavorite(dish.id);
+      }
     })
     .catch(err => {
       toast.error('Please log in to add favorites.');
+      setIsFavourite(!newState);
     });
   };
+
+  const [isFavourite, setIsFavourite] = useState(isInitiallyFavorited || false);
+
+  useEffect(()=>{
+    setIsFavourite(isInitiallyFavorited || false);
+
+  },[isInitiallyFavorited]
+  );
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden flex p-3 relative">
@@ -64,13 +82,18 @@ export const DishCard = ({ dish, addToCart }) => {
         onClick={handleFavoriteClick} 
         className="absolute top-2 right-2 p-1 text-2xl z-10"
         title="Add to favorites"
+        aria-label={ isFavourite ? "NO": "YES"}
       >
-        <lord-icon
-    src="https://cdn.lordicon.com/yucrjnnl.json"
-    trigger="hover"
-    colors="primary:#e83a30"
-    style={{width:'25px',height:'25px'}}>
-</lord-icon>
+        {isFavourite ? <lord-icon
+                          src="https://cdn.lordicon.com/yucrjnnl.json"
+                          trigger="hover"
+                          colors="primary:#e83a30"
+                          style={{width:'25px',height:'25px'}}>
+                      </lord-icon> : <lord-icon
+                          src="https://cdn.lordicon.com/hsabxdnr.json"
+                          trigger="hover"
+                          style={{width:'25px',height:'25px'}}>
+                      </lord-icon> }
       </button>
 
       <img 

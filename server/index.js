@@ -27,7 +27,7 @@ app.use(session({
   }
 }));
 
-
+//this is for handling login auth
 app.post("/login", (req, res)=>{
     const {email, password}= req.body
     UserModel.findOne({email: email})
@@ -51,7 +51,7 @@ app.post("/login", (req, res)=>{
 
 
 
-// This route gets the logged-in user's data
+// this is for the logged-in user's address
 
 app.post('/add-address', (req, res) => {
     // Check if the user is logged in from their session
@@ -78,7 +78,7 @@ app.post('/add-address', (req, res) => {
 });
 
 
-// 2. UPDATE YOUR EXISTING /profile route
+// this is for showing user info in the accountpage
 app.get('/profile', (req, res) => {
   if (!req.session.userId) {
     return res.status(401).json({ message: "Not authenticated" });
@@ -100,11 +100,69 @@ app.get('/profile', (req, res) => {
     .catch(err => res.status(500).json(err));
 });
 
+//this is for registring in the signup page
 app.post('/register', (req, res)=>{
     UserModel.create(req.body)
     .then(users => res.json(users))
     .catch(err => res.json(err))
 })
+
+
+// --- 1. NEW ENDPOINT: GET USER'S FAVORITES ---
+// This will return an array of dish IDs, e.g., ['d1', 'd5']
+app.get('/favorites', (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    UserModel.findById(req.session.userId)
+        .then(user => {
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            res.json(user.favorites); // Send back the array of favorite IDs
+        })
+        .catch(err => res.status(500).json(err));
+});
+
+
+// --- 2. NEW ENDPOINT: ADD/REMOVE A FAVORITE (TOGGLE) ---
+// The frontend will send a { dishId: 'd1' } in the body
+app.post('/favorites/toggle', (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    const { dishId } = req.body;
+
+    UserModel.findById(req.session.userId)
+        .then(user => {
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            // Check if the dish is already a favorite
+            const index = user.favorites.indexOf(dishId);
+
+            if (index > -1) {
+                // It exists, so remove it
+                user.favorites.splice(index, 1);
+            } else {
+                // It doesn't exist, so add it
+                user.favorites.push(dishId);
+            }
+
+            // Save the updated user
+            return user.save();
+        })
+        .then(updatedUser => {
+            // Send back the new list of favorites
+            res.json({ success: true, favorites: updatedUser.favorites });
+        })
+        .catch(err => res.status(500).json(err));
+});
+
+
 
 app.listen(3001, () =>{
     console.log("server is running")

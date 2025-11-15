@@ -8,6 +8,7 @@ import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import myBackgroundImage from './assets/bg_image.png';
 import Footer from './pages/Footer';
+import AboutUs from './pages/Aboutus';
 
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,10 +25,8 @@ function App() {
   // State for the shopping cart.
   const [cart, setCart] = useState([]);
 
-  /**
-   * Adds a dish to the shopping cart.
-   * If the item is already in the cart, it increases its quantity.
-   * @param {object} dishToAdd - The dish object to add.
+  /*
+   * Adds a dish to the shopping cart.   
    */
   const addToCart = (dishToAdd) => {
     setCart(prevCart => {
@@ -47,7 +46,7 @@ function App() {
         return [...prevCart, { ...dishToAdd, quantity: 1 }];
       }
     });
-    // Optional: Show a confirmation message
+    
     console.log(`Added ${dishToAdd.name} to cart.`);
     toast.success(' Item Added to cart! 🛒', {
       position: "top-center",
@@ -93,6 +92,8 @@ function App() {
    */
   const renderPage = () => {
     switch (activePage) {
+      case 'Aboutus':
+        return <AboutUs />;
       case 'Signup':
         return <SignupPage setActivePage={setActivePage}/>;
       case 'Login':

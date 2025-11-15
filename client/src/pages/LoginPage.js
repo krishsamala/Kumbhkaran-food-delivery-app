@@ -141,21 +141,20 @@ const LoginPage = ({ setActivePage }) => {
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm text-gray-500 hover:text-gray-700 focus:outline-none"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
-                    {showPassword ? <lord-icon
-    src="https://cdn.lordicon.com/dicvhxpz.json"
-    trigger="click"
-    stroke="bold"
-    state="morph-lashes"
-    colors="primary:#000000,secondary:#e83a30"
-    style={{width:'25px',height:'25px'}}>
-</lord-icon> : <lord-icon
-    src="https://cdn.lordicon.com/dicvhxpz.json"
-    trigger="morph"
-    stroke="bold"
-    state="morph-lashes"
-    colors="primary:#000000,secondary:#e83a30"
-    style={{width:'25px',height:'25px'}}>
-</lord-icon>}
+                    {showPassword ?<lord-icon
+                        src="https://cdn.lordicon.com/dicvhxpz.json"
+                        trigger="in"
+                        stroke="bold"
+                        state="morph-lashes"
+                        colors="primary:#000000,secondary:#e83a30"
+                        style={{width:'25px',height:'25px'}}>
+                    </lord-icon>  : <lord-icon
+                        src="https://cdn.lordicon.com/dicvhxpz.json"
+                        trigger="hover"
+                        stroke="bold"
+                        colors="primary:#121331,secondary:#e83a30"
+                        style={{width:'25px',height:'25px'}}>
+                    </lord-icon>}
                   </button>
                   {/* --- END OF NEW BUTTON --- */}
                 </div>
