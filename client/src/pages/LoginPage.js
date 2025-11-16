@@ -18,7 +18,7 @@ const LoginPage = ({ setActivePage }) => {
         .then(result => {
         console.log(result);
         if(result.data === "Success"){
-            setActivePage('Home');
+            setActivePage('IntroVideo');
         }
         else{
             // alert("record not existed")

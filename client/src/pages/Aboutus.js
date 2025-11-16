@@ -35,14 +35,14 @@ const teamData = [
     id: 3,
     name: 'Meet Savliya\n60003240021-I171',
     linkedinUrl: '#',
-    details: 'Role: UI/UX Designer. \nDesigned the entire app flow and is a Tailwind CSS wizard.',
+    details: 'Contributions: \nFrontend-\n  ~AccountPage\n Styling\n  ~HomePage .\n  ~AccountPage ',
     bgColor: 'bg-purple-500',
   },
   {
     id: 4,
     name: 'Bhavya Patel\n60003240268-I165',
     linkedinUrl: '#',
-    details: 'Role: Backend Specialist. \nHandled all the API integrations and database management.',
+    details: 'Contributions: \nFrontend-\n  ~SearchPage\n Styling\n  ~CartPage .\n  ~SearchPage ',
     bgColor: 'bg-green-500',
   }
 ];

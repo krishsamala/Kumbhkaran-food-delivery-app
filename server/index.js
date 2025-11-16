@@ -13,7 +13,7 @@ app.use(cors({
   credentials: true 
 }));
 
-mongoose.connect("mongodb://localhost:27017/user")
+mongoose.connect("mongodb+srv://krish:krishsv601@cluster0.8rl9k9b.mongodb.net/user")
 app.use(cookieParser());
 
 
@@ -108,8 +108,7 @@ app.post('/register', (req, res)=>{
 })
 
 
-// --- 1. NEW ENDPOINT: GET USER'S FAVORITES ---
-// This will return an array of dish IDs, e.g., ['d1', 'd5']
+//  GET USER'S FAVORITES 
 app.get('/favorites', (req, res) => {
     if (!req.session.userId) {
         return res.status(401).json({ message: "Not authenticated" });
@@ -126,8 +125,8 @@ app.get('/favorites', (req, res) => {
 });
 
 
-// --- 2. NEW ENDPOINT: ADD/REMOVE A FAVORITE (TOGGLE) ---
-// The frontend will send a { dishId: 'd1' } in the body
+// ADD/REMOVE A FAVORITE 
+
 app.post('/favorites/toggle', (req, res) => {
     if (!req.session.userId) {
         return res.status(401).json({ message: "Not authenticated" });

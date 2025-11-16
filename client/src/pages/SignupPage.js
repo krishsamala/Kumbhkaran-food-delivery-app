@@ -1,41 +1,50 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import logo from '../assets/logo.png';
- // <-- We have removed this import
+ import { toast, Bounce } from 'react-toastify';
 
-/**
- * A self-contained Login/Register page component.
- * It now accepts 'setActivePage' as a prop to handle navigation.
- * Includes a "Show Password" toggle.
- */
+
 const SignupPage = ({ setActivePage }) => {
-  // State to hold the values from the input fields
+  
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   
-  // --- NEW STATE for password visibility ---
+  
   const [showPassword, setShowPassword] = useState(false);
 
-  // Handler function for the Register button
 
-
-  // Handler function for the Login button
   const handleLogin = () => {
     console.log('Logging in with:', { email, password });
     setActivePage('Login');
     
   };
 
-  // We use preventDefault to stop the form from causing a page reload
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-   if (name === '' || email=== '' || password=== '') {
+   if (!name  || !email || !password) {
     
-    // Give visual feedback
-    alert("Please fill in all fields."); 
     
-    // Stop the function
+    toast.error('Please fill in all the fields!', {
+              position: "top-center",
+              icon:<lord-icon
+                  src="https://cdn.lordicon.com/aszgxiei.json"
+                  trigger="loop"
+                  colors="primary:#e83a30"
+                  style={{width:'25px',height:'25px'}}>
+              </lord-icon>,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+              }); 
+    
+    
     return; 
   }
     
@@ -160,7 +169,7 @@ const SignupPage = ({ setActivePage }) => {
             {/* Register Button */}
             <button
               type="button"
-              onClick={handleSubmit}
+              onClick={(handleSubmit)}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
             >
               Register

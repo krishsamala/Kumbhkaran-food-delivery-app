@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import myBackgroundImage from './assets/bg_image.png';
 import Footer from './pages/Footer';
 import AboutUs from './pages/Aboutus';
+import IntroVideoPage from './pages/IntroVideoPage';
 
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -92,6 +93,7 @@ function App() {
    */
   const renderPage = () => {
     switch (activePage) {
+      
       case 'Aboutus':
         return <AboutUs />;
       case 'Signup':
@@ -116,8 +118,27 @@ function App() {
         return <HomePage addToCart={addToCart} />;
     }
   };
-   if (activePage === 'Signup' ) {
-    return <SignupPage setActivePage={setActivePage} />;
+  if(activePage === 'IntroVideo'){
+    return <IntroVideoPage setActivePage={setActivePage} />;}
+        
+   if (activePage === 'Signup' ) {    
+    return (<div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+        />
+      <SignupPage setActivePage={setActivePage} />
+      </div>
+      );
   }
   if (activePage === 'Login' ) {
     return (<div>
