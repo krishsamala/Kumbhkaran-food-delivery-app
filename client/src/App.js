@@ -1,62 +1,53 @@
-import React, { useState } from 'react';
-import HomePage from './pages/HomePage';
-import SearchPage from './pages/SearchPage';
-import CartPage from './pages/CartPage';
-import AccountPage from './pages/AccountPage';
-import TopNavBar from './components/TopNavBar';
-import SignupPage from './pages/SignupPage';
-import LoginPage from './pages/LoginPage';
-import myBackgroundImage from './assets/bg_image.png';
-import Footer from './pages/Footer';
-import AboutUs from './pages/Aboutus';
-import IntroVideoPage from './pages/IntroVideoPage';
+import React, { useState } from "react";
+import HomePage from "./pages/HomePage";
+import SearchPage from "./pages/SearchPage";
+import CartPage from "./pages/CartPage";
+import AccountPage from "./pages/AccountPage";
+import TopNavBar from "./components/TopNavBar";
+import SignupPage from "./pages/SignupPage";
+import LoginPage from "./pages/LoginPage";
+import myBackgroundImage from "./assets/bg_image.png";
+import Footer from "./pages/Footer";
+import AboutUs from "./pages/Aboutus";
+import IntroVideoPage from "./pages/IntroVideoPage";
 
-import { ToastContainer, toast, Bounce } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-
-/**
- * The main App component.
- * This is the core of the application, managing which page is active
- * and the state of the shopping cart.
- */
 function App() {
-  // State to track the active page
-  const [activePage, setActivePage] = useState('Signup');
-  // State for the shopping cart.
+  const [activePage, setActivePage] = useState("Signup");
+
   const [cart, setCart] = useState([]);
 
   /*
-   * Adds a dish to the shopping cart.   
+   * Adds a dish to the shopping cart.
    */
   const addToCart = (dishToAdd) => {
-    setCart(prevCart => {
-      // Check if item is already in cart
-      const existingItem = prevCart.find(item => item.id === dishToAdd.id);
-   
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.id === dishToAdd.id);
+
       if (existingItem) {
-        // If yes, return new cart array with updated quantity
-        return prevCart.map(item =>
+        return prevCart.map((item) =>
           item.id === dishToAdd.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
-        
       } else {
-        // If no, add new item to cart with quantity 1
         return [...prevCart, { ...dishToAdd, quantity: 1 }];
       }
     });
-    
+
     console.log(`Added ${dishToAdd.name} to cart.`);
-    toast.success(' Item Added to cart! 🛒', {
+    toast.success(" Item Added to cart! 🛒", {
       position: "top-center",
-      icon:<lord-icon
-    src="https://cdn.lordicon.com/zdfcfvwu.json"
-    trigger="loop"
-    colors="primary:#30e849"
-    style={{width:'45px',height:'45px'}}>
-</lord-icon>,
+      icon: (
+        <lord-icon
+          src="https://cdn.lordicon.com/zdfcfvwu.json"
+          trigger="loop"
+          colors="primary:#30e849"
+          style={{ width: "45px", height: "45px" }}
+        ></lord-icon>
+      ),
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -66,22 +57,18 @@ function App() {
       theme: "light",
       transition: Bounce,
     });
-    
-
   };
 
-  
   const removeFromCart = (dishId) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== dishId));
+    setCart((prevCart) => prevCart.filter((item) => item.id !== dishId));
   };
-
 
   const updateCartQuantity = (dishId, newQuantity) => {
     if (newQuantity <= 0) {
       removeFromCart(dishId);
     } else {
-      setCart(prevCart =>
-        prevCart.map(item =>
+      setCart((prevCart) =>
+        prevCart.map((item) =>
           item.id === dishId ? { ...item, quantity: newQuantity } : item
         )
       );
@@ -93,18 +80,17 @@ function App() {
    */
   const renderPage = () => {
     switch (activePage) {
-      
-      case 'Aboutus':
+      case "Aboutus":
         return <AboutUs />;
-      case 'Signup':
-        return <SignupPage setActivePage={setActivePage}/>;
-      case 'Login':
-        return <LoginPage setActivePage={setActivePage}/>;
-      case 'Home':
-        return <HomePage addToCart={addToCart} setActivePage={setActivePage}/>;
-      case 'Search':
+      case "Signup":
+        return <SignupPage setActivePage={setActivePage} />;
+      case "Login":
+        return <LoginPage setActivePage={setActivePage} />;
+      case "Home":
+        return <HomePage addToCart={addToCart} setActivePage={setActivePage} />;
+      case "Search":
         return <SearchPage addToCart={addToCart} />;
-      case 'Cart':
+      case "Cart":
         return (
           <CartPage
             cart={cart}
@@ -112,87 +98,91 @@ function App() {
             removeFromCart={removeFromCart}
           />
         );
-      case 'Account':
-        return <AccountPage addToCart={addToCart} setActivePage={setActivePage}/>;
+      case "Account":
+        return (
+          <AccountPage addToCart={addToCart} setActivePage={setActivePage} />
+        );
       default:
         return <HomePage addToCart={addToCart} />;
     }
   };
-  if(activePage === 'IntroVideo'){
-    return <IntroVideoPage setActivePage={setActivePage} />;}
-        
-   if (activePage === 'Signup' ) {    
-    return (<div>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Bounce}
-        />
-      <SignupPage setActivePage={setActivePage} />
-      </div>
-      );
+  if (activePage === "IntroVideo") {
+    return <IntroVideoPage setActivePage={setActivePage} />;
   }
-  if (activePage === 'Login' ) {
-    return (<div>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Bounce}
+
+  if (activePage === "Signup") {
+    return (
+      <div>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
         />
-      <LoginPage setActivePage={setActivePage} />
+        <SignupPage setActivePage={setActivePage} />
       </div>
-      );
+    );
+  }
+  if (activePage === "Login") {
+    return (
+      <div>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
+        <LoginPage setActivePage={setActivePage} />
+      </div>
+    );
   }
   return (
-    
-    <div className="font-sans text-gray-800 max-w-7xl mx-auto px-4 py-8 bg-cover bg-center bg-repeat "
-      style={{ backgroundImage: `url(${myBackgroundImage})`}}>
-      <TopNavBar onNavigate={setActivePage} activePage={activePage} cartCount={cart.length} />
-      
-      {/* Main Content Area */}
-      
-      <main className=" px-2 py-8">
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-            transition={Bounce}
-            
-          />
-        {renderPage()}
+    <div
+      className="font-sans text-gray-800 max-w-7xl mx-auto px-4 py-8 bg-cover bg-center bg-repeat "
+      style={{ backgroundImage: `url(${myBackgroundImage})` }}
+    >
+      <TopNavBar
+        onNavigate={setActivePage}
+        activePage={activePage}
+        cartCount={cart.length}
+      />
 
+      {/* Main Content Area */}
+
+      <main className=" px-2 py-8">
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
+        {renderPage()}
       </main>
 
-      <Footer setActivePage={setActivePage}/>
+      <Footer setActivePage={setActivePage} />
     </div>
-
-   
-  ); 
+  );
 }
 
 export default App;
-
-
